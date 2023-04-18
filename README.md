@@ -17,14 +17,46 @@ Someone else might prefer to do it the other way round, so you could just prepar
 
 This was added on July 26 2021. There are numberous potential application for ABFE calculation, one of them is to evaluating the reliablity of the docked poses, ie., if you obtained 3 docked poses and not sure which one is more likely the right one, you could subject the 3 to ABFE one by one, the one with the best score could be argued to be the more likely true pose. See https://pubs.acs.org/doi/10.1021/jacs.6b11467 for a case study.
 
-## Only a 8 cpu cluster with mpi version of Gromacs
+## On a 8 cpu cluster with non-mpi version of Gromacs, with GPU
+```
+for (( a = 0; a <=2; a++ ))
+   do
+     for (( b = 0; b <10; b++ ))
+          do
+          cd lambda.$a.$b
+          mkdir ENMIN
+          #cd ENMIN
+          #gmx grompp -f ../../MDP/ENMIN/enmin.$a.$b.mdp -c ../../solv_ions.gro -p ../../topol.top -n ../../index_jz4.ndx -o enmin.tpr
+           #gmx mdrun -v -stepout 1000 -s enmin.tpr -deffnm enmin -ntmpi 1
+           #cd ../
+           #mkdir NVT
+           cd NVT
+            gmx grompp -f ../../MDP/NVT/nvt.$a.$b.mdp -c ../ENMIN/enmin.gro -p ../../topol.top -n ../../index.ndx -o nvt.tpr -r ../../solv_ions.gro
+           gmx mdrun -stepout 1000 -s nvt.tpr -deffnm nvt
+           cd ../
+           mkdir NPT
+            cd NPT
+            gmx grompp -f ../../MDP/NPT/npt.$a.$b.mdp -c ../NVT/nvt.gro -t ../NVT/nvt.cpt -p ../../topol.top -n ../../index.ndx -o npt.tpr -r ../../solv_ions.gro
+            gmx mdrun -stepout 1000 -s npt.tpr -deffnm npt -ntmpi 1
+             cd ../
+            mkdir PROD
+            cd PROD 
+            gmx grompp -f ../../MDP/PROD/prod.$a.$b.mdp -c ../NPT/npt.gro -t ../NPT/npt.cpt -p ../../topol.top -n ../../index.ndx -o prod.tpr
+            gmx mdrun -stepout 1000 -s prod.tpr -deffnm prod -dhdl dhdl -ntmpi 1
+
+            cd ../../
+            done
+      done
+```
+
+## Only a 8 cpu cluster with mpi version of Gromacs without GPU
 
 ```
 #!/bin/bash
 
 for (( a = 0; a <=2; a++ ))
 do
-    for (( b = 0; b <3; b++ ))
+    for (( b = 0; b <10; b++ ))
     do
         cd lambda.$a.$b
         mkdir ENMIN
