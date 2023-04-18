@@ -46,6 +46,8 @@ for (( a = 0; a <=2; a++ ))
 
 ## On a 40 cpu cluster with mpi version of Gromacs without GPU
 
+Create a file called 3.sh (you can name as whatever you like as long as it ends with *.sh)
+
 ```
 #!/bin/bash
 
@@ -78,3 +80,29 @@ do
 done
 
 ```
+## Example of PBS script to use the above 3.sh on a HPC cluster
+
+Create 4.pbs that refers 3.sh to run the simulation
+
+```
+#!/usr/bin/csh
+#PBS -l select=1:ncpus=40
+#PBS -l mem=80gb
+#PBS -l walltime=12:00:00
+#PBS -o job.o
+#PBS -e job.e
+
+cd $PBS_O_WORKDIR
+
+module load intel-mpi/2021.7.1 
+module load gromacs/2022.3
+
+sh 3.sh
+
+```
+## Submit your job by
+
+```
+qsub 4.pbs
+```
+
