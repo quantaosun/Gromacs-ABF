@@ -49,7 +49,7 @@ for (( a = 0; a <=2; a++ ))
       done
 ```
 
-## Only a 40 cpu cluster with mpi version of Gromacs without GPU
+## On a 40 cpu cluster with mpi version of Gromacs without GPU
 
 ```
 #!/bin/bash
