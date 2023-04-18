@@ -49,7 +49,7 @@ for (( a = 0; a <=2; a++ ))
       done
 ```
 
-## Only a 8 cpu cluster with mpi version of Gromacs without GPU
+## Only a 40 cpu cluster with mpi version of Gromacs without GPU
 
 ```
 #!/bin/bash
@@ -62,22 +62,22 @@ do
         mkdir ENMIN
         cd ENMIN
         gmx_mpi grompp -f ../../MDP/ENMIN/enmin.$a.$b.mdp -c ../../solv_ions.gro -p ../../topol.top -n ../../index_jz4.ndx -o enmin.tpr
-        mpirun -np 8 gmx_mpi mdrun -v -stepout 1000 -s enmin.tpr -deffnm enmin
+        mpirun -np 1 gmx_mpi mdrun -ntomp 40 -v -stepout 1000 -s enmin.tpr -deffnm enmin
         cd ../
         mkdir NVT
         cd NVT
         gmx_mpi grompp -f ../../MDP/NVT/nvt.$a.$b.mdp -c ../ENMIN/enmin.gro -p ../../topol.top -n ../../index.ndx -o nvt.tpr -r ../../solv_ions.gro
-        mpirun -np 8 gmx_mpi mdrun -stepout 1000 -s nvt.tpr -deffnm nvt
+        mpirun -np 1 gmx_mpi mdrun -ntomp 40 -stepout 1000 -s nvt.tpr -deffnm nvt
         cd ../
         mkdir NPT
         cd NPT
         gmx_mpi grompp -f ../../MDP/NPT/npt.$a.$b.mdp -c ../NVT/nvt.gro -t ../NVT/nvt.cpt -p ../../topol.top -n ../../index.ndx -o npt.tpr -r ../../solv_ions.gro
-        mpirun -np 8 gmx_mpi mdrun -stepout 1000 -s npt.tpr -deffnm npt
+        mpirun -np 1 gmx_mpi mdrun -ntomp 40 -stepout 1000 -s npt.tpr -deffnm npt
         cd ../
         mkdir PROD
         cd PROD
         gmx_mpi grompp -f ../../MDP/PROD/prod.$a.$b.mdp -c ../NPT/npt.gro -t ../NPT/npt.cpt -p ../../topol.top -n ../../index.ndx -o prod.tpr
-        mpirun -np 8 gmx_mpi mdrun -stepout 1000 -s prod.tpr -deffnm prod -dhdl dhdl
+        mpirun -np 1 gmx_mpi mdrun -ntomp 40 -stepout 1000 -s prod.tpr -deffnm prod -dhdl dhdl
         cd ../../
     done
 done
