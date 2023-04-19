@@ -1,4 +1,45 @@
 # Gromacs-ABF
+
+## One of the most important step in gromacs ABF calculation is to define the intermolecular restrain
+
+There are multiple possibilities for selecting the atoms for the restraint potential, but the basic principle is to choose atoms that are relatively rigid and are less likely to undergo relative displacement during the simulation. For small molecules, it is best to select atoms that are close to the center of mass position, while for proteins, it is best to select the main chain atoms of amino acids.
+
+If you are unsure how to select atoms, you can consider choosing the main chain atoms of neighboring amino acids that can form pi-pi interactions. If pi-pi interactions are not possible, atoms near the central part of the small molecule that can form hydrogen bonds could also be considered.
+
+Taking the COVID-19 7L10 as an example, by Maestro, you can select and define the restrain by yourself following the above general rules
+
+![image](https://user-images.githubusercontent.com/75652473/232961239-e53dae7a-ded4-48d9-a727-46dc1ea1a704.png)
+```
+Ligand: a:4712; b:4685; c: 4707 
+Protein: A:2541; B:2526; C:2525 
+r(a-A) = 3.00 
+angle baA =159.2 
+angle aAB =111.8 
+dihedral cbaA =-115.5 
+dihedral baAB =87.9 
+dihedral aABC =3.9
+```
+Add the following block to the end of the Gromacs topology file
+
+```
+[ intermolecular_interactions]
+[ bonds ]
+; ai     aj    type   bA      kA     bB      kB
+ 4712    2541  6      3.00   0.0    3.00   4184.0
+
+[ angles ]
+; ai     aj    ak     type    thA      fcA        thB      fcB
+ 4685   4712   2541   1       159.2     0.0        159.2     41.84
+ 4712   2541   2526   1       111.8     0.0        111.8     41.84
+
+[ dihedrals ]
+; ai     aj    ak    al    type     thA      fcA       thB      fcB
+ 4707  4685  4712  2541    2       -115.5    0.0     -115.5    41.84
+ 4685  4712  2541  2526    2        87.9     0.0      87.9     41.84
+ 4712  2541  2526  2525    2         3.9     0.0      3.9      41.84
+```
+## Background and introduction
+
 The absolute free energy of binding plays a vital role in protein-small molecule dynamics simulations, particularly in the early stages of drug discovery when the similarity of small molecules is insufficient for calculating relative binding free energies such as FEP. However, the calculation process is complex, requiring a skilled operator, numerous steps, and significant computing power, making it challenging to apply and often costly.
 
 To address these challenges,  this script explicitly designed for Google's Colab computing platform. The script integrates two GROMACS tutorials: Justin's protein complex tutorial and AlchemistryWiki's absolute combined free energy tutorial. The first tutorial is intended for use on a local computer with GROMACS installed, while the second is designed for better computing resources. By simplifying the process and reducing the manual steps for operators, this script provides an opportunity for elementary molecular simulators to perform absolute combined free energy calculations using the free computing power on the network for their research and development activities. This approach can greatly reduce costs and expand the scope of calculating protein-small molecule affinity beyond simulation techniques such as molecular docking.
@@ -8,6 +49,8 @@ The script is divided into two parts: the first part is Justin's protein-ligand 
 For users who prefer to prepare their ABFE calculations on their laptop, the input files can be uploaded to Colab or AI Studio for use. It is crucial to use the same GROMACS version across different platforms.
 
 ABFE calculations have numerous potential applications, such as evaluating the reliability of docked poses. If a researcher is unsure which of three docked poses is the most likely correct pose, each can undergo ABFE calculations, and the one with the best score can be considered the most probable candidate. For a case study of this approach, see https://pubs.acs.org/doi/10.1021/jacs.6b11467.
+
+## Job control bash script example
 
 ## On a 7 cpu cluster with non-mpi version of Gromacs, with GPU
 ```
