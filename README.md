@@ -1,8 +1,7 @@
 # Gromacs-ABF
 
 ## One of the most important step in gromacs ABF calculation is to define the intermolecular restrain
-
-There are multiple possibilities for selecting the atoms for the restraint potential, but the basic principle is to choose atoms that are relatively rigid and are less likely to undergo relative displacement during the simulation. For small molecules, it is best to select atoms that are close to the center of mass position, while for proteins, it is best to select the main chain atoms of amino acids.
+There are various options available for selecting the atoms for the restraint potential, but the fundamental principle is to opt for atoms that exhibit high rigidity and are less susceptible to relative displacement during the simulation. For small molecules, it is preferable to select atoms that are in proximity to the center of mass position, whereas for proteins, selecting the main chain atoms of amino acids is recommended. In particular, for proteins, the three atoms P1, P2, and P3 should ideally have an angle between them ranging from 90 to 120 degrees, with P1 being the closest to the ligand. Additionally, for the ligand atoms L1, L2, and L3, an angle of 90 degrees is preferable if possible, but it is not as strict as the P1-P2-P3 angle requirement.
 
 If you are unsure how to select atoms, you can consider choosing the main chain atoms of neighboring amino acids that can form pi-pi interactions. If pi-pi interactions are not possible, atoms near the central part of the small molecule that can form hydrogen bonds could also be considered.
 
