@@ -37,6 +37,8 @@ Add the following block to the end of the Gromacs topology file
  4685  4712  2541  2526    2        87.9     0.0      87.9     41.84
  4712  2541  2526  2525    2         3.9     0.0      3.9      41.84
 ```
+## Alternatively, it is possible to not define any intermolecular restrain, in this case, you can just skip the restrain correction during later analysis stage, but this is not recommeded.
+
 ## Background and introduction
 
 The absolute free energy of binding plays a vital role in protein-small molecule dynamics simulations, particularly in the early stages of drug discovery when the similarity of small molecules is insufficient for calculating relative binding free energies such as FEP. However, the calculation process is complex, requiring a skilled operator, numerous steps, and significant computing power, making it challenging to apply and often costly.
