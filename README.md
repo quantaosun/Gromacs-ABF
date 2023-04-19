@@ -12,36 +12,46 @@ Someone else might prefer to do it the other way round, so you could just prepar
 
 This was added on July 26 2021. There are numberous potential application for ABFE calculation, one of them is to evaluating the reliablity of the docked poses, ie., if you obtained 3 docked poses and not sure which one is more likely the right one, you could subject the 3 to ABFE one by one, the one with the best score could be argued to be the more likely true pose. See https://pubs.acs.org/doi/10.1021/jacs.6b11467 for a case study.
 
-## On a 8 cpu cluster with non-mpi version of Gromacs, with GPU
+## On a 7 cpu cluster with non-mpi version of Gromacs, with GPU
 ```
-for (( a = 0; a <=2; a++ ))
-   do
-     for (( b = 0; b <10; b++ ))
-          do
-          cd lambda.$a.$b
-          mkdir ENMIN
-          #cd ENMIN
-          #gmx grompp -f ../../MDP/ENMIN/enmin.$a.$b.mdp -c ../../solv_ions.gro -p ../../topol.top -n ../../index_jz4.ndx -o enmin.tpr
-           #gmx mdrun -v -stepout 1000 -s enmin.tpr -deffnm enmin -ntmpi 1
-           #cd ../
-           #mkdir NVT
-           cd NVT
-            gmx grompp -f ../../MDP/NVT/nvt.$a.$b.mdp -c ../ENMIN/enmin.gro -p ../../topol.top -n ../../index.ndx -o nvt.tpr -r ../../solv_ions.gro
-           gmx mdrun -stepout 1000 -s nvt.tpr -deffnm nvt
-           cd ../
-           mkdir NPT
-            cd NPT
-            gmx grompp -f ../../MDP/NPT/npt.$a.$b.mdp -c ../NVT/nvt.gro -t ../NVT/nvt.cpt -p ../../topol.top -n ../../index.ndx -o npt.tpr -r ../../solv_ions.gro
-            gmx mdrun -stepout 1000 -s npt.tpr -deffnm npt -ntmpi 1
-             cd ../
-            mkdir PROD
-            cd PROD 
-            gmx grompp -f ../../MDP/PROD/prod.$a.$b.mdp -c ../NPT/npt.gro -t ../NPT/npt.cpt -p ../../topol.top -n ../../index.ndx -o prod.tpr
-            gmx mdrun -stepout 1000 -s prod.tpr -deffnm prod -dhdl dhdl -ntmpi 1
+# Loop over lambda windows
+for (( a=0; a<$n_windows; a++ ))
+do
+  # Loop over simulations within each window
+  for (( b=0; b<$n_sims; b++ ))
+  do
+    # Create directories for each simulation step
+    mkdir -p lambda.$a.$b/ENMIN
+    mkdir -p lambda.$a.$b/NVT
+    mkdir -p lambda.$a.$b/NPT
+    mkdir -p lambda.$a.$b/PROD
 
-            cd ../../
-            done
-      done
+    # Energy minimization step
+    cd lambda.$a.$b/ENMIN
+    gmx grompp -f ../../MDP/ENMIN/enmin.$a.$b.mdp -c ../../solv_ions.gro -p ../../topol.top -n ../../index_jz4.ndx -o enmin.tpr
+    gmx mdrun -v -stepout 1000 -s enmin.tpr -deffnm enmin -ntmpi 1 -ntomp 7
+    cd ../
+
+    # NVT equilibration step
+    cd NVT
+    gmx grompp -f ../../MDP/NVT/nvt.$a.$b.mdp -c ../ENMIN/enmin.gro -p ../../topol.top -n ../../index.ndx -o nvt.tpr -r ../../solv_ions.gro
+    gmx mdrun -stepout 1000 -s nvt.tpr -deffnm nvt -ntmpi 1 -ntomp 7
+    cd ../
+
+    # NPT equilibration step
+    cd NPT
+    gmx grompp -f ../../MDP/NPT/npt.$a.$b.mdp -c ../NVT/nvt.gro -t ../NVT/nvt.cpt -p ../../topol.top -n ../../index.ndx -o npt.tpr -r ../../solv_ions.gro
+    gmx mdrun -stepout 1000 -s npt.tpr -deffnm npt -ntmpi 1 -ntomp 7
+    cd ../
+
+    # Production run
+    cd PROD
+    gmx grompp -f ../../MDP/PROD/prod.$a.$b.mdp -c ../NPT/npt.gro -t ../NPT/npt.cpt -p ../../topol.top -n ../../index.ndx -o prod.tpr
+    gmx mdrun -stepout 1000 -s prod.tpr -deffnm prod -dhdl dhdl -ntmpi 1 -ntomp 7
+    cd ../../
+  done
+done
+
 ```
 
 ## On a 40 cpu cluster with mpi version of Gromacs without GPU
@@ -105,4 +115,4 @@ sh 3.sh
 ```
 qsub 4.pbs
 ```
-
+## 提高Gromacs的运行效率可以参考中文资料 http://bbs.keinsci.com/thread-13861-1-1.html
