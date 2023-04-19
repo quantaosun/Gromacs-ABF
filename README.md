@@ -5,9 +5,10 @@ There are various options available for selecting the atoms for the restraint po
 
 If you are unsure how to select atoms, you can consider choosing the main chain atoms of neighboring amino acids that can form pi-pi interactions. If pi-pi interactions are not possible, atoms near the central part of the small molecule that can form hydrogen bonds could also be considered.
 
-Taking the COVID-19 7L10 as an example, by Maestro, you can select and define the restrain by yourself following the above general rules
+Taking the COVID-19 crystal structure as an example, by Maestro, you can select and define the restrain by yourself following the above general rules
 
-![image](https://user-images.githubusercontent.com/75652473/232961239-e53dae7a-ded4-48d9-a727-46dc1ea1a704.png)
+<img width="790" alt="image" src="https://user-images.githubusercontent.com/75652473/232963498-57755fba-87e0-4f9c-a151-5bd329c43f1b.png">
+
 ```
 Ligand: a:4712; b:4685; c: 4707 
 Protein: A:2541; B:2526; C:2525 
