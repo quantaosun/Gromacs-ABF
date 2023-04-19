@@ -54,7 +54,7 @@ done
 
 ```
 
-## On a 40 cpu cluster with mpi version of Gromacs without GPU
+## On a 40 cpu cluster with mpi version of Gromacs without GPU (This only applicable to gmx_mpi version, with OpenMPI or interlMPI in the environment)
 
 Create a file called 3.sh (you can name as whatever you like as long as it ends with *.sh)
 
