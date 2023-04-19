@@ -155,4 +155,7 @@ sh 3.sh
 ```
 qsub 4.pbs
 ```
+## Speed and efficiency
+For the Justin's tutorial example, 3HTB protein-ligand system, the speed on the 40 CPU only cluster, with Gromacs-mpi/2023, is 25-28 ns/day, for the compelx branch, 50-55ns/day for the ligand branch. One calculation can be done in about 1.5 day without any GPU involved.
+
 ## 提高Gromacs的运行效率可以参考中文资料 http://bbs.keinsci.com/thread-13861-1-1.html
