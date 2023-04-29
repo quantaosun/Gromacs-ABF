@@ -1,0 +1,85 @@
+;====================================================
+; Energy minimization
+;====================================================
+
+;----------------------------------------------------
+; RUN CONTROL & MINIMIZATION
+;----------------------------------------------------
+define                 = -DFLEXIBLE
+integrator             = steep
+nsteps                 = 5000
+emtol                  = 100
+emstep                 = 0.01
+nstcomm                = 100
+
+;----------------------------------------------------
+; OUTPUT CONTROL
+;----------------------------------------------------
+nstxout                = 250        ; save coordinates to .trr every 250 steps
+nstvout                = 0          ; don't save velocities to .trr
+nstfout                = 0          ; don't save forces to .trr
+
+nstxout-compressed     = 500        ; xtc compressed trajectory output every 500 steps
+compressed-x-precision = 1000
+nstlog                 = 500        ; update log file every 500 steps
+nstenergy              = 500        ; save energies every 500 steps
+nstcalcenergy          = 100
+
+;----------------------------------------------------
+; NEIGHBOR SEARCHING
+;----------------------------------------------------
+cutoff-scheme          = Verlet
+ns-type                = grid
+nstlist                = 1
+rlist                  = 1.0
+
+;----------------------------------------------------
+; BONDS
+;----------------------------------------------------
+constraints            = none
+
+;----------------------------------------------------
+; ELECTROSTATICS
+;----------------------------------------------------
+coulombtype            = PME
+rcoulomb               = 1.0
+pme-order              = 6 
+fourierspacing         = 0.10
+ewald-rtol             = 1e-6
+
+;----------------------------------------------------
+; VDW
+;----------------------------------------------------
+vdw-type                = PME
+rvdw                    = 1.0
+vdw-modifier            = Potential-Shift
+ewald-rtol-lj           = 1e-3
+lj-pme-comb-rule        = Geometric
+DispCorr                = EnerPres
+
+;----------------------------------------------------
+; TEMPERATURE & PRESSURE COUPL
+;----------------------------------------------------
+Tcoupl              = no
+Pcoupl              = no
+gen_vel             = no
+
+;----------------------------------------------------
+; FREE ENERGY CALCULATIONS
+;----------------------------------------------------
+free-energy              = yes
+couple-moltype           = JZ4
+couple-lambda0           = vdw-q
+couple-lambda1           = none
+couple-intramol          = no
+separate-dhdl-file       = yes
+sc-alpha                 = 0.5
+sc-power                 = 1
+sc-sigma		 = 0.3
+init-lambda-state        = $LAMBDA$
+
+bonded-lambdas           = 0.0 0.01 0.025 0.05 0.075 0.1 0.2 0.35 0.5 0.75 1.0 1.00 1.0 1.00 1.0 1.00 1.0 1.0 1.0 1.0 1.0 1.0 1.00 1.0 1.00 1.0 1.00 1.0 1.00 1.0
+coul-lambdas             = 0.0 0.00 0.000 0.00 0.000 0.0 0.0 0.00 0.0 0.00 0.0 0.25 0.5 0.75 1.0 1.00 1.0 1.0 1.0 1.0 1.0 1.0 1.00 1.0 1.00 1.0 1.00 1.0 1.00 1.0
+vdw-lambdas              = 0.0 0.00 0.000 0.00 0.000 0.0 0.0 0.00 0.0 0.00 0.0 0.00 0.0 0.00 0.0 0.05 0.1 0.2 0.3 0.4 0.5 0.6 0.65 0.7 0.75 0.8 0.85 0.9 0.95 1.0
+nstdhdl                  = 100
+calc-lambda-neighbors    = -1
