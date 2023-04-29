@@ -1,3 +1,3 @@
-There are two files
-1: complex system
-2: ligand only system
+A complete prepared Gromacs-Free file list can be downloaded from 
+
+https://drive.google.com/file/d/1mqwOFE_G58fxKmYFoVztvp_R4T_WltXI/view?usp=sharing 
