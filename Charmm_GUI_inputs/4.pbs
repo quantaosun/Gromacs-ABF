@@ -1,0 +1,14 @@
+#!/usr/bin/csh
+#PBS -l select=1:ncpus=40
+#PBS -l mem=80gb
+#PBS -l walltime=4:00:00
+#PBS -o job.o
+#PBS -e job.e
+
+cd $PBS_O_WORKDIR
+
+module load intel-mpi/2021.7.1 
+module load gromacs/2022.3
+
+sh 3_2.sh
+
