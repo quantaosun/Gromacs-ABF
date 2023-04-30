@@ -86,6 +86,7 @@ dG = - K * T * math.log(arg)
 
 print "dG_off = %8.3f kcal/mol" %(dG/4.184)
 print "dG_on  = %8.3f kcal/mol" %(-dG/4.184)
+
 ```
 
 ## Background and introduction
