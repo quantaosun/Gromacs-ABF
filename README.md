@@ -270,4 +270,3 @@ total      0 -     29,   DG 25.59 +/-  2.25
 ```
 dG = -25.59 KJ/mol (-6.1 Kcal/mol)
 
-## 提高Gromacs的运行效率可以参考中文资料 http://bbs.keinsci.com/thread-13861-1-1.html
