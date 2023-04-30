@@ -40,7 +40,7 @@ Add the following block to the end of the Gromacs topology file
 ```
 ## Alternatively, it is possible to not define any intermolecular restrain, in this case, you can just skip the restrain correction during later analysis stage, but this is not recommeded.
 
-## After the simulaiton is done, and analysis is finised, we correct the result by the following script
+## After the simulaiton is done, and analysis is finised, we correct the result by the following script, it is critical to pay attention to the r0's is nm not angstrom
 
 ```
 #!/usr/bin/env python
