@@ -29,7 +29,7 @@ Add the following block to the end of the Gromacs topology file
 [ intermolecular_interactions]
 [ bonds ]
 ; ai     aj    type   bA      kA     bB      kB
- 4712    2541  6      3.00   0.0    3.00   4184.0
+ 4712    2541  6      0.30   0.0    0.30   4184.0
 
 [ angles ]
 ; ai     aj    ak     type    thA      fcA        thB      fcB
