@@ -1,5 +1,9 @@
 # Gromacs-ABF
 
+## Update: A potential automatic tool to generate Gromacs intermolecular restrain
+
+https://chemrxiv.org/engage/api-gateway/chemrxiv/assets/orp/resource/item/61dea70f81f3fee545a4825a/original/evaluating-the-use-of-absolute-binding-free-energy-in-the-fragment-optimization-process.pdf (page 8/9)
+
 ## One of the most important step in gromacs ABF calculation is to define the intermolecular restrain
 There are various options available for selecting the atoms for the restraint potential, but the fundamental principle is to opt for atoms that exhibit high rigidity and are less susceptible to relative displacement during the simulation. For small molecules, it is preferable to select atoms that are in proximity to the center of mass position, whereas for proteins, selecting the main chain atoms of amino acids is recommended. In particular, for proteins, the three atoms **A**, **B**, and **C** should ideally have an angle between them ranging from 90 to 120 degrees, with **A** being the closest to the ligand. Additionally, for the ligand atoms **a**, **b**, and **c**, an angle of 90 degrees is preferable if possible, but it is not as strict as the **A**-**B**-**C** angle requirement.
 
